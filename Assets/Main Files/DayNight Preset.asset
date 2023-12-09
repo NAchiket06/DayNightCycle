@@ -102,4 +102,4 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 4
     m_NumAlphaKeys: 2
-  MaxDirectionalLightIntensity: 1.5
+  MaxDirectionalLightIntensity: 1

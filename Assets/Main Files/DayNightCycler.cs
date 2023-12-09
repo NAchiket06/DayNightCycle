@@ -44,7 +44,12 @@ public class DayNightCycler : MonoBehaviour
     #region SpotLights
     [SerializeField] GameObject LightsParent;
     float LightIntensity,refLightTime=0.01f;
-    float MaxLightIntensity = 30000,LightswitchTime = 0.25f;
+    float MaxLightIntensity = 10,LightswitchTime = 0.25f;
+    #endregion
+    #region AreaLights
+    [SerializeField] GameObject AreaLights;
+    float AreaLightIntensity, ArearefLightTime = 0.01f;
+    float AreaMaxLightIntensity = 3000, AreaLightswitchTime = 0.25f;
     #endregion
 
     #endregion
@@ -122,7 +127,6 @@ public class DayNightCycler : MonoBehaviour
         UpdateShadows(percent);
         UpdateEnvironmentReflections(percent);
         UpdateFog(percent);
-
     }
 
 
@@ -233,13 +237,15 @@ public class DayNightCycler : MonoBehaviour
         if(td == TimeEnum.Night)
         {
             LightIntensity = Mathf.SmoothDamp(LightIntensity, MaxLightIntensity, ref refLightTime, LightswitchTime);
+            AreaLightIntensity = Mathf.SmoothDamp(AreaLightIntensity, AreaMaxLightIntensity, ref ArearefLightTime, AreaLightswitchTime);
         }
         else 
         {
             LightIntensity = Mathf.SmoothDamp(LightIntensity, 0f, ref refLightTime, LightswitchTime);
+            AreaLightIntensity = Mathf.SmoothDamp(AreaLightIntensity, 0, ref ArearefLightTime, AreaLightswitchTime);
         }
 
-        for(int i = 0; i < LightsParent.transform.childCount; i++)
+        for (int i = 0; i < LightsParent.transform.childCount; i++)
         {
             //if (i > 6)
             //{
@@ -248,6 +254,7 @@ public class DayNightCycler : MonoBehaviour
             //    continue;   
             //}
             LightsParent.transform.GetChild(i).GetComponent<Light>().intensity = LightIntensity;
+            AreaLights.transform.GetChild(i).GetComponent<Light>().intensity = AreaLightIntensity;
         }
     }
 }
